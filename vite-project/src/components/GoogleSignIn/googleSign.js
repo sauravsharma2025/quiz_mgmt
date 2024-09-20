@@ -2,8 +2,10 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 // Your web app's Firebase configuration
+const apiUrl = import.meta.env.VITE_API_KEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAyPTY23Vr0aHE5VlMZCceNQoR9pSwjGX8",
+  apiKey: apiUrl,
     authDomain: "quiz-mgmt.firebaseapp.com",
     databaseURL: "https://quiz-mgmt-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "quiz-mgmt",
