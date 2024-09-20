@@ -1,0 +1,47 @@
+.start {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .start h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .start h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .start input[type="text"] {
+    padding: 10px;
+    border: 2px solid #4CAF50; /* Green border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px;
+    width: 80%; /* Width of the input box */
+    max-width: 300px; /* Max width */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease; /* Smooth transition for border color */
+  }
+  
+  .start input[type="text"]:focus {
+    outline: none; /* Remove default outline */
+    border-color: #66bb6a; /* Darker green on focus */
+  }
+  
+  .start button {
+    margin: 10px;
+    padding: 18px 26px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+  }
+  
+  .start button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
