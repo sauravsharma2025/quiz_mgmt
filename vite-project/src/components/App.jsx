@@ -12,6 +12,7 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 import "../index.css";
+import { fetchDataById } from "./GoogleSignIn/DataFromDb";
 
 const SECS_PER_QUESTION = 5;
 
@@ -25,7 +26,7 @@ const initialState = {
   points: 0,
   highscore: 0,
   secondsRemaining: null,
-  clickedOption: null
+  clickedOption: null,
 };
 
 function reducer(state, action) {
@@ -58,10 +59,14 @@ function reducer(state, action) {
           action.payload === question.correctOption
             ? state.points + question.points
             : state.points,
-
       };
     case "nextQuestion":
-      return { ...state, index: state.index + 1, answer: null, clickedOption: null };
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+        clickedOption: null,
+      };
     case "finish":
       return {
         ...state,
@@ -92,7 +97,16 @@ function reducer(state, action) {
 
 export default function App() {
   const [
-    { questions, status, index, answer, points, highscore, secondsRemaining,clickedOption },
+    {
+      questions,
+      status,
+      index,
+      answer,
+      points,
+      highscore,
+      secondsRemaining,
+      clickedOption,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -141,7 +155,7 @@ export default function App() {
                   answer={answer}
                   clickedOption={clickedOption}
                 />
-                
+
                 <Footer>
                   <Timer
                     dispatch={dispatch}

@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { fetchDataById } from './DataFromDb';
 
 // Your web app's Firebase configuration
 const apiUrl = import.meta.env.VITE_API_KEY;
@@ -25,6 +26,9 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     console.log('User Info:', user);
+    //Reterive quiz data
+    const id = "crvasfHdjFOdSuhKmdvD"; 
+    await fetchDataById(id);
     return result
   } catch (error) {
     console.error('Error signing in:', error);

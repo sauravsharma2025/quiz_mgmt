@@ -1,0 +1,23 @@
+.upload-quiz-container{
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow:  0px 4px 10px rgba(0,0,0,0);
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    color: black;
+
+}
+h1{
+    color: black;
+}
+.form-group{
+    margin-bottom: 1.5rem;
+}
+label{
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}

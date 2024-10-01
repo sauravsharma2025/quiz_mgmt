@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import App from "./components/App";
 import "./index.css";
+import UploadQuiz from "./components/uploadQuiz";
 
 // React v18
 const root = ReactDOM.createRoot(document.getElementById("root"));
