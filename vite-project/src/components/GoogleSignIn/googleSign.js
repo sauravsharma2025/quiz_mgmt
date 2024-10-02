@@ -26,9 +26,6 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     console.log('User Info:', user);
-    //Reterive quiz data
-    const id = "crvasfHdjFOdSuhKmdvD"; 
-    await fetchDataById(id);
     return result
   } catch (error) {
     console.error('Error signing in:', error);

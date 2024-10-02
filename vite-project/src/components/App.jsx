@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import Header from "./Header";
 import Main from "./Main";
@@ -15,7 +15,6 @@ import "../index.css";
 import { fetchDataById } from "./GoogleSignIn/DataFromDb";
 
 const SECS_PER_QUESTION = 5;
-
 // We need to define the intialState in order to use useReduce Hook.
 const initialState = {
   questions: [],
@@ -109,8 +108,8 @@ export default function App() {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
-
-  const numQuestions = questions.length;
+  const [quizData, setQuizData] = useState("");
+  const numQuestions = quizData.TotalQuestion;
   const maxPossiblePoints = questions.reduce(
     (prev, cur) => prev + cur.points,
     0
@@ -126,19 +125,31 @@ export default function App() {
         })
       )
       .catch((err) => dispatch({ type: "dataFailed" }));
+
+    //Reterive quiz data
+    const id = "crvasfHdjFOdSuhKmdvD";
+    const fetchQuizData = async () => {
+      const result = await fetchDataById(id);
+      setQuizData(result);
+    };
+    fetchQuizData();
   }, []);
 
   return (
     <div className="wrapper">
       <div className="app">
         <div className="headerWrapper">
-          <Header />
+          <Header title={quizData.title} />
 
           <Main>
             {status === "loading" && <Loader />}
             {status === "error" && <Error />}
             {status === "ready" && (
-              <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+              <StartScreen
+                numQuestions={numQuestions}
+                dispatch={dispatch}
+                title={quizData.title}
+              />
             )}{" "}
             {status === "active" && (
               <>
