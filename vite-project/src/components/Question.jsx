@@ -1,10 +1,16 @@
 import Options from "./Options";
 
-function Question({ question, dispatch, answer,clickedOption }) {
+function Question({ question, dispatch, answer, clickedOption }) {
   return (
     <div className="question_container">
-      <h4>{question.question}</h4>
-      <Options question={question} dispatch={dispatch} answer={answer}  clickedOption={clickedOption} />
+      <h4>{question.questionText}</h4>{" "}
+      {/* Ensure the correct field is accessed */}
+      <Options
+        question={question} // Passing the full question object, including options
+        dispatch={dispatch}
+        answer={answer}
+        clickedOption={clickedOption}
+      />
     </div>
   );
 }

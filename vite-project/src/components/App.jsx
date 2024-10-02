@@ -12,7 +12,7 @@ import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 import "../index.css";
-import { fetchDataById } from "./GoogleSignIn/DataFromDb";
+import { fetchQuizById } from "./GoogleSignIn/DataFromDb";
 
 const SECS_PER_QUESTION = 5;
 // We need to define the intialState in order to use useReduce Hook.
@@ -109,29 +109,44 @@ export default function App() {
     dispatch,
   ] = useReducer(reducer, initialState);
   const [quizData, setQuizData] = useState("");
-  const numQuestions = quizData.TotalQuestion;
-  const maxPossiblePoints = questions.reduce(
-    (prev, cur) => prev + cur.points,
-    0
-  );
+  const numQuestions = quizData.noOfQuestions;
+  // const maxPossiblePoints = questions.reduce(
+  //   (prev, cur) => prev + cur.points,
+  //   0
+  // );
+  const maxPossiblePoints = 10;
 
   useEffect(function () {
+    // Fetch fallback quiz data (optional, for fallback purposes)
     fetch("https://vinayak9669.github.io/React_quiz_api/questions.json")
       .then((res) => res.json())
-      .then((data) =>
-        dispatch({
-          type: "dataReceived",
-          payload: data["questions"],
-        })
-      )
+      .then((data) => {
+        console.log("fallback");
+      })
       .catch((err) => dispatch({ type: "dataFailed" }));
 
-    //Reterive quiz data
-    const id = "crvasfHdjFOdSuhKmdvD";
+    // Retrieve quiz data from the database
+    const id = "crvasfHdjFOdSuhKmdvD"; // Example quiz ID
     const fetchQuizData = async () => {
-      const result = await fetchDataById(id);
-      setQuizData(result);
+      try {
+        const result = await fetchQuizById(id); // Fetch quiz data from the database
+        console.log("Fetched quiz data:", result);
+
+        // Set quiz data to state
+        setQuizData(result);
+
+        // Directly dispatch the received questions after fetching data
+        dispatch({
+          type: "dataReceived",
+          payload: result.questions, // Dispatch the correct questions immediately
+        });
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+        dispatch({ type: "dataFailed" }); // Handle errors by dispatching the error action
+      }
     };
+
+    // Call fetchQuizData to load the quiz data when the component mounts
     fetchQuizData();
   }, []);
 
@@ -139,7 +154,7 @@ export default function App() {
     <div className="wrapper">
       <div className="app">
         <div className="headerWrapper">
-          <Header title={quizData.title} />
+          <Header title={quizData.quizTitle} />
 
           <Main>
             {status === "loading" && <Loader />}
@@ -148,7 +163,7 @@ export default function App() {
               <StartScreen
                 numQuestions={numQuestions}
                 dispatch={dispatch}
-                title={quizData.title}
+                title={quizData.quizTitle}
               />
             )}{" "}
             {status === "active" && (

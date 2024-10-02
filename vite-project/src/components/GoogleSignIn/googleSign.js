@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { fetchDataById } from './DataFromDb';
 
 // Your web app's Firebase configuration
 const apiUrl = import.meta.env.VITE_API_KEY;

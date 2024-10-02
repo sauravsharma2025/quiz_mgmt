@@ -8,19 +8,21 @@ function Options({ question, dispatch, answer, clickedOption }) {
   };
 
   useEffect(() => {
-    console.log('clickedOption updated:', clickedOption);
+    console.log("clickedOption updated:", clickedOption);
   }, [clickedOption]);
 
   return (
     <div>
       {question.options.map((option, index) => (
         <button
-          className={`btn btn-option ${clickedOption === index ? "clicked" : ""}`}
+          className={`btn btn-option ${
+            clickedOption === index ? "clicked" : ""
+          }`}
           key={index}
-         
           onClick={() => handleOptClick(index)}
+          disabled={hasAnswered} // Disable if the user has already answered
         >
-          {option}
+          {option.optionText} {/* Render option text */}
         </button>
       ))}
     </div>
