@@ -56,21 +56,19 @@ function reducer(state, action) {
       };
     case "newAnswer":
       const question = state.questions.at(state.index);
+      const previousAnswerCorrect =
+        state.answer !== null && question.options[state.answer].isCorrect;
 
-      console.log(
-        "@SS",
-        question.options[action.payload].isCorrect,
-        state.points
-      );
       return {
         ...state,
         answer: action.payload,
-        clickedOption: action.payload, // Set clicked option here
+        clickedOption: action.payload,
         points:
-          question.options[action.payload].isCorrect === true
-            ? state.points + 10
-            : state.points,
+          // Adjust points by removing points for a previous correct answer if any
+          (previousAnswerCorrect ? state.points - 10 : state.points) +
+          (question.options[action.payload].isCorrect ? 10 : 0),
       };
+
     case "nextQuestion":
       return {
         ...state,

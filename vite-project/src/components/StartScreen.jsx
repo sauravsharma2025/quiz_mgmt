@@ -9,7 +9,6 @@ function StartScreen({ numQuestions, dispatch, title }) {
   const [email, setEmail] = useState("");
 
   async function login() {
-    console.log("www", name);
     let result = "";
     if (name && email) {
       // result = await signInWithGoogle();
@@ -25,7 +24,7 @@ function StartScreen({ numQuestions, dispatch, title }) {
         const emailQuery = query(userRef, where("email", "==", email));
         const querySnapShot = await getDocs(emailQuery);
         if (!querySnapShot.empty) {
-          throw new Error("Already Registered");
+          return alert("Already attempted this quiz");
         }
         const docRef = await addDoc(collection(db, "users"), userInfo);
         dispatch({

@@ -20,7 +20,7 @@ function Options({ question, dispatch, answer, clickedOption }) {
           }`}
           key={index}
           onClick={() => handleOptClick(index)}
-          disabled={hasAnswered} // Disable if the user has already answered
+          // disabled={hasAnswered} // Disable if the user has already answered
         >
           {option.optionText} {/* Render option text */}
         </button>
