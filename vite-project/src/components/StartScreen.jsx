@@ -6,29 +6,34 @@ import { db } from "./GoogleSignIn/firebaseConfig.jsx";
 
 function StartScreen({ numQuestions, dispatch, title }) {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   async function login() {
     console.log("www", name);
     let result = "";
-    if (name) {
-      result = await signInWithGoogle();
+    if (name && email) {
+      // result = await signInWithGoogle();
 
       const userInfo = {
         name,
-        emailName: result.user.displayName,
-        email: result.user.email,
+        emailName: "result.user.displayName",
+        email: email,
       };
       try {
         const docRef = await addDoc(collection(db, "users"), userInfo);
+        dispatch({
+          type: "user",
+          payload: docRef.id,
+        });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
         console.error("Error adding document: ", e);
       }
       console.log("result", userInfo);
 
-      if (result) dispatch({ type: "start" });
+      dispatch({ type: "start" });
     } else {
-      alert("pls enter name");
+      alert("pls enter name and email address");
     }
   }
 
@@ -42,6 +47,12 @@ function StartScreen({ numQuestions, dispatch, title }) {
         type="text"
         placeholder="Enter Your Name"
         onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Enter your Email Address"
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <button className="btn btn-ui" onClick={login}>

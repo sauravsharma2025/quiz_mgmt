@@ -14,7 +14,8 @@ import Timer from "./Timer";
 import "../index.css";
 import { fetchQuizById } from "./GoogleSignIn/DataFromDb";
 
-const SECS_PER_QUESTION = 5;
+const SECS_PER_QUESTION = 500;
+const POINTS_PER_ANSWER = 10;
 // We need to define the intialState in order to use useReduce Hook.
 const initialState = {
   questions: [],
@@ -26,6 +27,7 @@ const initialState = {
   highscore: 0,
   secondsRemaining: null,
   clickedOption: null,
+  userId: null,
 };
 
 function reducer(state, action) {
@@ -35,6 +37,11 @@ function reducer(state, action) {
         ...state,
         questions: action.payload,
         status: "ready",
+      };
+    case "user":
+      return {
+        ...state,
+        userId: action.payload,
       };
     case "dataFailed":
       return {
@@ -50,13 +57,18 @@ function reducer(state, action) {
     case "newAnswer":
       const question = state.questions.at(state.index);
 
+      console.log(
+        "@SS",
+        question.options[action.payload].isCorrect,
+        state.points
+      );
       return {
         ...state,
         answer: action.payload,
         clickedOption: action.payload, // Set clicked option here
         points:
-          action.payload === question.correctOption
-            ? state.points + question.points
+          question.options[action.payload].isCorrect === true
+            ? state.points + 10
             : state.points,
       };
     case "nextQuestion":
@@ -105,25 +117,23 @@ export default function App() {
       highscore,
       secondsRemaining,
       clickedOption,
+      userId,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
   const [quizData, setQuizData] = useState("");
   const numQuestions = quizData.noOfQuestions;
-  // const maxPossiblePoints = questions.reduce(
-  //   (prev, cur) => prev + cur.points,
-  //   0
-  // );
-  const maxPossiblePoints = 10;
+  const maxPossiblePoints = questions.length * POINTS_PER_ANSWER;
+  // const maxPossiblePoints = 20;
 
   useEffect(function () {
     // Fetch fallback quiz data (optional, for fallback purposes)
-    fetch("https://vinayak9669.github.io/React_quiz_api/questions.json")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("fallback");
-      })
-      .catch((err) => dispatch({ type: "dataFailed" }));
+    // fetch("https://vinayak9669.github.io/React_quiz_api/questions.json")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log("fallback");
+    //   })
+    //   .catch((err) => dispatch({ type: "dataFailed" }));
 
     // Retrieve quiz data from the database
     const id = "crvasfHdjFOdSuhKmdvD"; // Example quiz ID
@@ -198,6 +208,7 @@ export default function App() {
             )}
             {status === "finished" && (
               <FinishScreen
+                userId={userId}
                 points={points}
                 maxPossiblePoints={maxPossiblePoints}
                 highscore={highscore}

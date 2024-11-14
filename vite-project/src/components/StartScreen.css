@@ -13,7 +13,8 @@
     margin-bottom: 20px;
   }
   
-  .start input[type="text"] {
+  .start input[type="text"],
+  .start input[type="email"] {
     padding: 10px;
     border: 2px solid #4CAF50; /* Green border */
     border-radius: 5px; /* Rounded corners */
@@ -24,10 +25,12 @@
     transition: border-color 0.3s ease; /* Smooth transition for border color */
   }
   
-  .start input[type="text"]:focus {
-    outline: none; /* Remove default outline */
-    border-color: #66bb6a; /* Darker green on focus */
+  .start input[type="text"]:focus,
+  .start input[type="email"]:focus {
+      outline: none; /* Remove default outline */
+      border-color: #66bb6a; /* Darker green on focus */
   }
+  
   
   .start button {
     margin: 10px;
