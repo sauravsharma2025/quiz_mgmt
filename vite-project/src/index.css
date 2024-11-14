@@ -142,7 +142,7 @@ progress {
   border-radius: 100px;
   transition: 0.3s;
 }
-.btn:not([disabled]):hover {
+/* .btn:not([disabled]):hover {
   background-color: var(--color-darkest);
 }
 
@@ -152,7 +152,7 @@ progress {
 
 .btn[disabled]:hover {
   cursor: not-allowed;
-}
+} */
 
 .btn-ui {
   float: right;

@@ -14,7 +14,7 @@ import Timer from "./Timer";
 import "../index.css";
 import { fetchQuizById } from "./GoogleSignIn/DataFromDb";
 
-const SECS_PER_QUESTION = 500;
+const SECS_PER_QUESTION = 20;
 const POINTS_PER_ANSWER = 10;
 // We need to define the intialState in order to use useReduce Hook.
 const initialState = {
