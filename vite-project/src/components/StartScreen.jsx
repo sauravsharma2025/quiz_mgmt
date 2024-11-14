@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { signInWithGoogle } from "./GoogleSignIn/googleSign.js";
 import "./StartScreen.css"; // Import your CSS file
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "./GoogleSignIn/firebaseConfig.jsx";
 
 function StartScreen({ numQuestions, dispatch, title }) {
@@ -13,13 +13,20 @@ function StartScreen({ numQuestions, dispatch, title }) {
     let result = "";
     if (name && email) {
       // result = await signInWithGoogle();
-
       const userInfo = {
         name,
         emailName: "result.user.displayName",
         email: email,
       };
       try {
+        //Check if email is already exist or not
+        const userRef = collection(db, "users");
+
+        const emailQuery = query(userRef, where("email", "==", email));
+        const querySnapShot = await getDocs(emailQuery);
+        if (!querySnapShot.empty) {
+          throw new Error("Already Registered");
+        }
         const docRef = await addDoc(collection(db, "users"), userInfo);
         dispatch({
           type: "user",
