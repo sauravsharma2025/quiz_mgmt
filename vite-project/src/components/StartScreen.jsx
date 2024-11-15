@@ -18,14 +18,14 @@ function StartScreen({ numQuestions, dispatch, title }) {
         email: email,
       };
       try {
-        //Check if email is already exist or not
-        const userRef = collection(db, "users");
+        // //Check if email is already exist or not
+        // const userRef = collection(db, "users");
 
-        const emailQuery = query(userRef, where("email", "==", email));
-        const querySnapShot = await getDocs(emailQuery);
-        if (!querySnapShot.empty) {
-          return alert("Already attempted this quiz");
-        }
+        // const emailQuery = query(userRef, where("email", "==", email));
+        // const querySnapShot = await getDocs(emailQuery);
+        // if (!querySnapShot.empty) {
+        //   return alert("Already attempted this quiz");
+        // }
         const docRef = await addDoc(collection(db, "users"), userInfo);
         dispatch({
           type: "user",
