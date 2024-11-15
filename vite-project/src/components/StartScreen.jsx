@@ -1,45 +1,60 @@
-import React, { useRef, useState } from "react";
-import { signInWithGoogle } from "./GoogleSignIn/googleSign.js";
-import "./StartScreen.css"; // Import your CSS file
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import React, { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "./GoogleSignIn/firebaseConfig.jsx";
+import "./StartScreen.css"; // Import your CSS file
 
 function StartScreen({ numQuestions, dispatch, title }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  // Regex patterns
+  const nameRegex = /^[a-zA-Z\s]{2,50}$/; // Allows letters, spaces, 2-50 characters
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email pattern
+
+  const showError = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError(""); // Clear the error after 3 seconds
+    }, 2000); // 3000ms = 3 seconds
+  };
+
+  const validateInputs = () => {
+    if (!nameRegex.test(name)) {
+      showError(
+        "Invalid name. Only letters and spaces are allowed (2-50 characters)."
+      );
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      showError("Invalid email format. Please enter a valid email.");
+      return false;
+    }
+    setError(""); // Clear errors if valid
+    return true;
+  };
 
   async function login() {
-    let result = "";
-    if (name && email) {
-      // result = await signInWithGoogle();
+    if (validateInputs()) {
       const userInfo = {
         name,
-        emailName: "result.user.displayName",
-        email: email,
+        email,
       };
-      try {
-        // //Check if email is already exist or not
-        // const userRef = collection(db, "users");
 
-        // const emailQuery = query(userRef, where("email", "==", email));
-        // const querySnapShot = await getDocs(emailQuery);
-        // if (!querySnapShot.empty) {
-        //   return alert("Already attempted this quiz");
-        // }
+      try {
+        // Add user to Firestore
         const docRef = await addDoc(collection(db, "users"), userInfo);
         dispatch({
           type: "user",
           payload: docRef.id,
         });
         console.log("Document written with ID: ", docRef.id);
+
+        dispatch({ type: "start" });
       } catch (e) {
         console.error("Error adding document: ", e);
+        showError("Error saving your data. Please try again.");
       }
-      console.log("result", userInfo);
-
-      dispatch({ type: "start" });
-    } else {
-      alert("pls enter name and email address");
     }
   }
 
@@ -52,15 +67,18 @@ function StartScreen({ numQuestions, dispatch, title }) {
       <input
         type="text"
         placeholder="Enter Your Name"
+        value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
       <input
         type="email"
         placeholder="Enter your Email Address"
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       />
+      {error && <p className="error">{error}</p>}
       <button className="btn btn-ui" onClick={login}>
         Let's start
       </button>
