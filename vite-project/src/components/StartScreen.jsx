@@ -47,7 +47,7 @@ function StartScreen({ numQuestions, dispatch, title }) {
     <div className="start">
       <h2>Welcome to The {title} Quiz!</h2>
       <h3>
-        {numQuestions} questions to test your {title} mastery
+        {numQuestions} questions to test your {title} product mastery
       </h3>
       <input
         type="text"
